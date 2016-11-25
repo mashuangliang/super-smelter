@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!--变量声明-->
+	<property name="smelter.name" value="smelter-web"/>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<property name="log.base" value="/Data/logs" />
+	<contextName>${smelter.name}</contextName>
+
+	<!--default_log-->
+	<appender name="default_log"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/${smelter.name}/apilogs/default_log.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</layout>
+	</appender>
+	<logger name="com.smelter.action" level="debug" >
+		<appender-ref ref="default_log" />
+	</logger>
+	<!--default_log end-->
+
+	<!--service log-->
+	<appender name="service_log"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/${smelter.name}/apilogs/service_log.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</layout>
+	</appender>
+	<logger name="com.smelter.service.impl" level="info"  >
+		<appender-ref ref="service_log" />
+	</logger>
+	<!--service log end-->
+
+	<!--dap log-->
+	<appender name="dao_log"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/${smelter.name}/apilogs/dao_log.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</layout>
+	</appender>
+	<logger name="com.smelter.dao" level="error" >
+		<appender-ref ref="dao_log" />
+	</logger>
+	<!--dao log end-->
+
+	<!--visit_log-->
+	<appender name="visit_log"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/${smelter.name}/operatelogs/visit_log.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</layout>
+	</appender>
+	<logger name="com.smelter.log.visitrecord" level="info" >
+		<appender-ref ref="visit_log" />
+	</logger>
+	<!--visit_log end-->
+
+	<!--error_log-->
+	<appender name="error_log"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/${smelter.name}/apilogs/error_log.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</layout>
+	</appender>
+	<logger name="com.smelter.log.error" level="error" >
+		<appender-ref ref="error_log" />
+	</logger>
+	<!--error_log end-->
+
+	<!--access_log-->
+	<appender name="access_log"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/${smelter.name}/apilogs/access_log.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n
+			</pattern>
+			<charset>UTF-8</charset>
+		</layout>
+	</appender>
+	<logger name="com.smelter.log.access" level="info" >
+		<appender-ref ref="access_log" />
+	</logger>
+	<!--accesslog end-->
+
+	<!--其他日志包结构符合基本的交由root的appender打印输出   -->
+	<logger name="org.apache.catalina" level="WARN" />
+	<logger name="org.apache" level="WARN" />
+	<logger name="com.google.code" level="ERROR" />
+	<logger name="org.springframework" level="WARN" />
+
+	<!--JdbcTemplate的日志输出器 -->
+	<logger name="org.springframework.jdbc.core.StatementCreatorUtils"
+			additivity="false" level="TRACE">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.springframework.jdbc.core" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql.Connection" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql.Statement" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql.ResultSet" additivity="true">
+		<level value="DEBUG" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<root level="DEBUG">
+		<appender-ref ref="default_log" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

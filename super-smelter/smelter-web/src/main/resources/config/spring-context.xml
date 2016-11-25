@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+	         http://www.springframework.org/schema/aop
+	         http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 加载 jdbc.properties 配置文件 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- db服务 配置 -->
+    <import resource="spring-db.xml" />
+
+    <!-- 定义aspectj -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--监控spring bean 性能
+     如果你的dateSource定义在spring中，javamelody会自动发现不需要额外配置-->
+    <bean id="facadeMonitoringAdvisor" class="net.bull.javamelody.MonitoringSpringAdvisor">
+        <property name="pointcut">
+            <bean class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+                <property name="patterns">
+                   <array>
+                        <value></value>
+                    </array>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Bean自动代理处理器 配置-->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" >
+        <property name="beanNames">
+            <list>
+                <!-- 配置所有Service结尾命名的Bean，即所有Service层的类都要经过exceptionHandler异常处理类 -->
+                <value>*ServiceImpl</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>exceptionHandler</value>
+                <value>logLnterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Spring 统一日志处理   LogInterceptor拦截器 配置　-->
+    <bean id="logLnterceptor" class="com.smelter.interceptor.LogInterceptor"/>
+
+    <!-- Spring 统一异常处理  ExceptionAdvisor配置 -->
+    <bean id="exceptionHandler" class="com.smelter.interceptor.ExceptionAdvisor"></bean>
+
+    <!--上传统一参数设置-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="10485760000"></property>
+        <property name="maxInMemorySize" value="1024"></property>
+    </bean>
+</beans>
