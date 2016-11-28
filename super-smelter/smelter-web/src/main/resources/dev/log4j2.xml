@@ -1,0 +1,50 @@
+<Configuration status="off" name="smelter" packages="">
+    <properties>
+        <property name="patternLayout">[%d{yyyy-MM-dd HH:mm:ss}] %t %p %X{name} [%c] - %m%n</property>
+        <property name="filePath">opt/log
+        </property>
+        <property name="fileName">${filePath}/smelter.log</property>
+        <property name="rollingFileName">${filePath}/smelter-%i.log
+        </property>
+    </properties>
+    <Appenders>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${patternLayout}"/>
+        </Console>
+
+        <RollingRandomAccessFile name="Rolling" fileName="${fileName}" filePattern="${rollingFileName}" append="true">
+            <PatternLayout pattern="${patternLayout}"/>
+            <Policies>
+
+                <SizeBasedTriggeringPolicy size="100M"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+    <Loggers>
+
+        <AsyncRoot level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Rolling"/>
+        </AsyncRoot>
+
+        <AsyncLogger name="com.smelter.action" level="info" additivity="true">
+            <AppenderRef ref="Rolling"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="com.smelter.interceptor" level="info" additivity="true">
+            <AppenderRef ref="Rolling"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="com.smelter.service.impl" level="info" additivity="true">
+            <AppenderRef ref="Rolling"/>
+        </AsyncLogger>
+
+        <AsyncLogger name="com.smelter.dao" level="info" additivity="true">
+            <AppenderRef ref="Rolling"/>
+        </AsyncLogger>
+
+    </Loggers>
+</Configuration>

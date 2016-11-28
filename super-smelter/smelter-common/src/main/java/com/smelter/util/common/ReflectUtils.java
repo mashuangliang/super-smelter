@@ -1,7 +1,6 @@
 package com.smelter.util.common;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 
 import java.io.PrintWriter;
@@ -13,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class ReflectUtils {
-    private static final Logger logger = Logger.getLogger(ReflectUtils.class);
     private static final Map<String, Class> typeMap = new HashMap() {
         {
             this.put("int", Integer.class);
@@ -55,7 +53,7 @@ public class ReflectUtils {
             try {
                 result = field.get(obj);
             } catch (IllegalAccessException var5) {
-                logger.error("error:", var5);
+                var5.printStackTrace();
             }
 
             return result;
@@ -73,7 +71,7 @@ public class ReflectUtils {
                 try {
                     field.set(obj, value);
                 } catch (IllegalAccessException var5) {
-                    logger.error("error:", var5);
+                    var5.printStackTrace();
                 }
             }
         }
@@ -175,13 +173,11 @@ public class ReflectUtils {
             Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
             if (index < params.length && index >= 0) {
                 if (!(params[index] instanceof Class)) {
-                    logger.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
                     return Object.class;
                 } else {
                     return (Class) params[index];
                 }
             } else {
-                logger.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "\'s Parameterized Type: " + params.length);
                 return Object.class;
             }
         }

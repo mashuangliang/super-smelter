@@ -24,6 +24,10 @@ public class TestAction extends BaseAction{
     @RequestMapping(value = "test")
     @ResponseBody
     public ResponseVo test(@RequestParam("base") String base,@RequestParam("body") String body) throws Exception {
+        logger.debug("debug");
+        logger.info("info");
+        logger.warn("warn");
+        logger.error("error");
         RequestVo<Beftender> reqVo = getRequestVo(base,body,Beftender.class);
         Beftender beftender = reqVo.getBody();
         beftender = testService.getBeftenderDetail(beftender.getTid());
