@@ -7,12 +7,6 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
        default-lazy-init="true">
 
-    <!-- 只扫描service，不扫描controller，与mvc扫描不冲突 -->
-    <context:component-scan base-package="com.smelter">
-        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
-
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="baseDataSource"></property>
         <property name="configLocation" value="classpath:config/mybatis-config.xml" />

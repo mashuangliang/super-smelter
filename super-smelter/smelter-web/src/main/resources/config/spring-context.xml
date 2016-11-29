@@ -2,10 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	         http://www.springframework.org/schema/beans/spring-beans.xsd
 	         http://www.springframework.org/schema/aop
-	         http://www.springframework.org/schema/aop/spring-aop.xsd">
+	         http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 加载 jdbc.properties 配置文件 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -17,10 +18,15 @@
     </bean>
 
     <!-- db服务 配置 -->
-    <import resource="spring-db.xml" />
+    <import resource="spring-db.xml"/>
 
     <!-- 定义aspectj -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!-- 只扫描service，不扫描controller，与mvc扫描不冲突 -->
+    <context:component-scan base-package="com.smelter">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
     <!--监控spring bean 性能
      如果你的dateSource定义在spring中，javamelody会自动发现不需要额外配置-->
@@ -28,7 +34,7 @@
         <property name="pointcut">
             <bean class="org.springframework.aop.support.JdkRegexpMethodPointcut">
                 <property name="patterns">
-                   <array>
+                    <array>
                         <value></value>
                     </array>
                 </property>
@@ -37,7 +43,7 @@
     </bean>
 
     <!-- Bean自动代理处理器 配置-->
-    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" >
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
         <property name="beanNames">
             <list>
                 <!-- 配置所有Service结尾命名的Bean，即所有Service层的类都要经过exceptionHandler异常处理类 -->
